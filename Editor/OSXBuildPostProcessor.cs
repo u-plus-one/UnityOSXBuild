@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace OSXBuild.Editor
 {
-	public class MacBuildPostProcessor : IPostprocessBuildWithReport
+	public class OSXBuildPostProcessor : IPostprocessBuildWithReport
 	{
 		//							         _______rwxrwxrwx________________
 		const uint UNIX_FLAGS_EXECUTABLE = 0b10000001111111110000000000000000;
