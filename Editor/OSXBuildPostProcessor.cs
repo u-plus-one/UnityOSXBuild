@@ -1,3 +1,4 @@
+#if UNITY_EDITOR_WIN
 using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
 using UnityEditor;
@@ -17,3 +18,4 @@ namespace OSXBuild.Editor
 		}
 	}
 }
+#endif
