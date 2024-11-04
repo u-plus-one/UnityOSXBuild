@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace OSXBuild.Editor
 {
-	public class MacBuildPostProcessor : IPostprocessBuildWithReport
+	public class OSXBuildPostProcessor : IPostprocessBuildWithReport
 	{
 		public int callbackOrder => int.MaxValue;
 
