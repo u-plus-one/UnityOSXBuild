@@ -1,0 +1,9 @@
+{
+  "name": "com.github.d3tonat0r.unityosxbuild",
+  "version": "0.1.0",
+  "displayName": "OSX Build",
+  "description": "A brief description of the package. This is the text that appears in the details view of the Package Manager window. This field supports UTF–8 character codes. This means that you can use special formatting character codes, such as line breaks (\n) and bullets (\u25AA).",
+  "unity": "2022.1",
+  "category": "",
+  "hideInEditor": true
+}
