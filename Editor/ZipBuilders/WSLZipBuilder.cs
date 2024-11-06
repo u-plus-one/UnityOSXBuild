@@ -103,6 +103,7 @@ namespace OSXBuild.Editor
 			process.Start();
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();
+			process.WaitForExit(60000);
 			#endregion
 		}
 
