@@ -44,7 +44,7 @@ namespace OSXBuild.Editor
 			}
 		}
 
-		private static void VerboseLog(string message)
+		public static void VerboseLog(string message)
 		{
 			if(OSXBuildSettings.Instance.verboseLogging)
 			{
