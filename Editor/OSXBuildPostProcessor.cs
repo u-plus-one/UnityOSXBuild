@@ -30,6 +30,7 @@ namespace OSXBuild.Editor
 				}
 				VerboseLog($"Using {builder.GetType().Name} to create Zip ...");
 
+				//Create zip from the built app directory
 				string sourceDir = report.summary.outputPath;
 				string zipDir = sourceDir + ".zip";
 				builder.CreateZip(sourceDir, zipDir);
@@ -41,6 +42,28 @@ namespace OSXBuild.Editor
 				{
 					Debug.LogError("OSX build zip creation failed.");
 				}
+
+				//Perform actions on the build directory based on project setting
+				CleanSourceDirectory(sourceDir);
+			}
+		}
+
+		private void CleanSourceDirectory(string sourceDir)
+		{
+			if(OSXBuildSettings.Instance.originalBuildOption == OriginalBuildOption.KeepEmptyDirectory) { 
+				//Delete contents of the build directory but keep the directory itself
+				foreach(var dir in Directory.GetDirectories(sourceDir))
+				{
+					Directory.Delete(dir, true);
+				}
+				foreach(var file in Directory.GetFiles(sourceDir))
+				{
+					File.Delete(file);
+				}
+			}
+			else if(OSXBuildSettings.Instance.originalBuildOption == OriginalBuildOption.Delete)
+			{
+				Directory.Delete(sourceDir, true);
 			}
 		}
 
