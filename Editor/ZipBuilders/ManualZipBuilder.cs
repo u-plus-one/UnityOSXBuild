@@ -9,6 +9,11 @@ namespace OSXBuild.Editor
 {
 	public class ManualZipBuilder : ZipBuilder
 	{
+		//							         _______rwxrwxrwx________________
+		const uint UNIX_FLAGS_EXECUTABLE = 0b10000001111111110000000000000000;
+		const uint UNIX_FLAGS_DEFAULT =    0b10000001101101100000000000000000;
+		//						             \------/\------/\------/\------/
+
 		public ManualZipBuilder(BuildReport report) : base(report) 
 		{
 
@@ -18,12 +23,6 @@ namespace OSXBuild.Editor
 		{
 			var buildName = Path.GetFileName(rootPath);
 			var executableFilePath = $"{buildName}/Contents/MacOS/{PlayerSettings.productName}";
-
-			//Delete existing zip if present
-			if(File.Exists(targetZip))
-			{
-				File.Delete(targetZip);
-			}
 
 			//Compress executable into a zip file
 			ZipFile.CreateFromDirectory(rootPath, targetZip, System.IO.Compression.CompressionLevel.NoCompression, true);
@@ -46,9 +45,6 @@ namespace OSXBuild.Editor
 
 			//Self test
 			CheckExecutableFlags(rootPath, executableFilePath);
-
-			//Delete original build directory
-			DeleteBuildDirectory(rootPath);
 		}
 
 		private static void SetHostOS(string rootPath, int entryCount)
