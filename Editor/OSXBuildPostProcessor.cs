@@ -15,6 +15,15 @@ namespace OSXBuild.Editor
 		{
 			if(report.summary.platform == BuildTarget.StandaloneOSX)
 			{
+				string sourceDir = report.summary.outputPath;
+				string zipFileName = sourceDir + ".zip";
+
+				//Delete existing zip if present
+				if(File.Exists(zipFileName))
+				{
+					File.Delete(zipFileName);
+				}
+
 				ZipBuilder builder;
 				if(OSXBuildSettings.Instance.zipCreationMethod == CompressionMethod.WSL)
 				{
@@ -31,12 +40,10 @@ namespace OSXBuild.Editor
 				VerboseLog($"Using {builder.GetType().Name} to create Zip ...");
 
 				//Create zip from the built app directory
-				string sourceDir = report.summary.outputPath;
-				string zipDir = sourceDir + ".zip";
-				builder.CreateZip(sourceDir, zipDir);
-				if(File.Exists(zipDir))
+				builder.CreateZip(sourceDir, zipFileName);
+				if(File.Exists(zipFileName))
 				{
-					VerboseLog($"OSX Build zip created successfully at {zipDir}");
+					VerboseLog($"OSX Build zip created successfully at {zipFileName}");
 				}
 				else
 				{
