@@ -57,7 +57,9 @@ namespace OSXBuild.Editor
 
 		private void CleanSourceDirectory(string sourceDir)
 		{
-			if(OSXBuildSettings.Instance.originalBuildOption == OriginalBuildOption.KeepEmptyDirectory) { 
+			if(OSXBuildSettings.Instance.originalBuildOption == OriginalBuildOption.KeepEmptyDirectory)
+			{
+				VerboseLog("Clearing original build directory ...");
 				//Delete contents of the build directory but keep the directory itself
 				foreach(var dir in Directory.GetDirectories(sourceDir))
 				{
@@ -70,6 +72,7 @@ namespace OSXBuild.Editor
 			}
 			else if(OSXBuildSettings.Instance.originalBuildOption == OriginalBuildOption.Delete)
 			{
+				VerboseLog("Deleting original build directory ...");
 				Directory.Delete(sourceDir, true);
 			}
 		}
