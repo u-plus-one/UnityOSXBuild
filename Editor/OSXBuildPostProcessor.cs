@@ -4,6 +4,8 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
 using UnityEditor;
 using UnityEngine;
+using System.IO.Compression;
+using ZipCompressionLevel = System.IO.Compression.CompressionLevel;
 
 namespace OSXBuild.Editor
 {
@@ -24,6 +26,8 @@ namespace OSXBuild.Editor
 					File.Delete(zipFileName);
 				}
 
+#if UNITY_EDITOR_WIN
+				//In case of windows, use either windows subsystem for linux (WSL) or manual zip manipulation
 				ZipBuilder builder;
 				if(OSXBuildSettings.Instance.zipCreationMethod == CompressionMethod.WSL)
 				{
@@ -38,9 +42,13 @@ namespace OSXBuild.Editor
 					throw new System.NotImplementedException();
 				}
 				VerboseLog($"Using {builder.GetType().Name} to create Zip ...");
-
-				//Create zip from the built app directory
 				builder.CreateZip(sourceDir, zipFileName);
+#else
+				//In case of MacOS / Linux, just create a normal zip without modifying it
+				//TODO: needs verification
+				CreateZip(sourceDir, zipFileName);
+#endif
+
 				if(File.Exists(zipFileName))
 				{
 					VerboseLog($"OSX Build zip created successfully at {zipFileName}");
@@ -75,6 +83,15 @@ namespace OSXBuild.Editor
 				VerboseLog("Deleting original build directory ...");
 				Directory.Delete(sourceDir, true);
 			}
+		}
+
+		private void CreateZip(string folder, string zip)
+		{
+			ZipCompressionLevel compressionLevel;
+			if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Optimal) compressionLevel = ZipCompressionLevel.Optimal;
+			else if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Fastest) compressionLevel = ZipCompressionLevel.Fastest;
+			else compressionLevel = ZipCompressionLevel.NoCompression;
+			ZipFile.CreateFromDirectory(folder, zip, compressionLevel, true);
 		}
 
 		private static void VerboseLog(string message)
