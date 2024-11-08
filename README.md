@@ -66,15 +66,15 @@ You can also download this repository and extract the `Editor` directory file an
 
 Any build for OSX (otherwise known as MacOS) built on Windows devices, do in general *not* work. Instead, you get presented with an error, saying `The application "game-name" can't be opened`, with no more information.
 
-The reason why OSX builds built on Windows do not work on OSX, is the fact that Windows does not get the concept of file attributes, or at least does not know executable flags, which are needed for OSX to know a file is executable. This executable generally can only be added on Unix devices, which both Linux and OSX devices are. The only current solutions for creating an OSX build, are building on either Linux or OSX itself.
+The reason why OSX builds built on Windows do not work on OSX, is the fact that Windows does not keep track of unix-specific file attributes (read/write/execute attributes), which are needed for OSX to run an executable. This executable generally can only be added on Unix devices, which both Linux and OSX devices are. The only current solutions for creating an OSX build, are building on either Linux or OSX itself.
 
 ## The Solution
 
-This package adds or preservers the executable bits, which get lost because of Windows.
+This package automatically creates a zip from the mac build and restores the executable bits, which get lost because Windows does not support them.
 
-If you use the [WSL Zip Creation Method](#wsl), it utilises the Windows Subsystem for Linux to zip the build, so OSX knows how to read, unpack, and fix all files, hence adding the executable bit. It's possible to manually add the executable bit to a file on Linux too, with the `chmod` command.
+If you use the [WSL Zip Creation Method](#wsl), it utilises the Windows Subsystem for Linux to zip the build, so OSX knows how to read, unpack, and fix all files, hence adding the executable bit. It's possible to manually add the executable bit to a file on Linux too, with the `chmod` command. If WSL is already installed on the system, this is the recommended method.
 
-The [Zip Manipulation](#zip-manipulation) method, instead, is a Windows-only solution. Instead of relying on a Unix system, it zips the build first, then edits the zip itself and its entries (the files inside), to accomodate the necessary file attributes getting lost. To make sure everything works as expected on OSX when unzipping this zip, it changes the zip OS to Linux too, to fake it being made on Linux.
+The [Zip Manipulation](#zip-manipulation) method, instead, is a Windows-only solution. Instead of relying on a Unix system, it zips the build first, then edits the zip itself and its entries (the files inside), to restore the missing file attributes. To make sure everything works as expected on OSX when unzipping this zip, it changes the zip's Host OS to Unix too, to ensure the required file attributes are applied.
 
 ### TODO
 
