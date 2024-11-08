@@ -26,11 +26,24 @@ namespace OSXBuild.Editor
 			var executableFilePath = $"{buildName}/Contents/MacOS/{PlayerSettings.productName}";
 
 			//Compress executable into a zip file
-			ZipCompressionLevel compressionLevel;
-			if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Optimal) compressionLevel = ZipCompressionLevel.Optimal;
-			else if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Fastest) compressionLevel = ZipCompressionLevel.Fastest;
-			else compressionLevel = ZipCompressionLevel.NoCompression;
-			ZipFile.CreateFromDirectory(rootPath, targetZip, compressionLevel, true);
+			ZipCompressionLevel compressionLevel = ZipCompressionLevel.Fastest;
+
+			switch (OSXBuildSettings.Instance.zipCompressionLevel)
+            {
+                case CompressionLevel.None:
+                    compressionLevel = ZipCompressionLevel.NoCompression;
+                    break;
+
+                case CompressionLevel.Fastest:
+                    compressionLevel = ZipCompressionLevel.Fastest;
+                    break;
+
+                case CompressionLevel.Optimal:
+                    compressionLevel = ZipCompressionLevel.Optimal;
+                    break;
+            }
+
+            ZipFile.CreateFromDirectory(rootPath, targetZip, compressionLevel, true);
 
 			int entryCount;
 			//Modify zip to set the executable attributes
