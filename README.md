@@ -87,15 +87,15 @@ The following files will need to be edited:
   - [x] Package version
   - [x] Minimum Unity version
   - [ ] Author information
-  - [ ] Package samples
+  - [x] ~~Package samples~~
   - More information about package manifest files: https://docs.unity3d.com/Manual/upm-manifestPkg.html
-- [ ] Runtime .asmdef
-  - [ ] File name must be [company-name].[package-name].asmdef
-  - [ ] Assembly name must be [company-name].[package-name]
-- [ ] Editor .asmdef
-  - [ ] File name must be "[company-name].[package-name].Editor.asmdef"
-  - [ ] Assembly name must be "[company-name].[package-name].Editor"
-  - [ ] Optional: Reference runtime assembly
+- [x] ~~Runtime .asmdef~~
+  - [x] ~~File name must be [company-name].[package-name].asmdef~~
+  - [x] ~~Assembly name must be [company-name].[package-name]~~
+- [x] Editor .asmdef
+  - [x] File name must be "[company-name].[package-name].Editor.asmdef"
+  - [x] Assembly name must be "[company-name].[package-name].Editor"
+  - [x] ~~Optional: Reference runtime assembly~~
 - [ ] LICENSE.md
 - [x] This README.md
 
