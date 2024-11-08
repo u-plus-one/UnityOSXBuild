@@ -59,12 +59,29 @@ namespace OSXBuild.Editor
 			#endregion
 
 			#region Zipping process
-            var process = new Process()
+			float compressionLevel = 6;
+
+			switch (OSXBuildSettings.Instance.zipCompressionLevel)
+			{
+				case CompressionLevel.None:
+					compressionLevel = 0;
+					break;
+
+				case CompressionLevel.Fastest:
+					compressionLevel = 1;
+					break;
+
+				case CompressionLevel.Optimal:
+					compressionLevel = 9;
+					break;
+			}
+
+			var process = new Process()
 			{
 				StartInfo = new ProcessStartInfo()
 				{
 					FileName = "wsl",
-					Arguments = $"-e bash -c \"cd {buildFolderWsl} && zip -r {buildName}.zip {buildName}\"",
+					Arguments = $"-e bash -c \"cd {buildFolderWsl} && zip -{compressionLevel} -r {buildName}.zip {buildName}\"",
 					RedirectStandardOutput = true,
 					RedirectStandardError = true,
 					UseShellExecute = false,
