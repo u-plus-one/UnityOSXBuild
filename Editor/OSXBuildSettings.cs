@@ -34,7 +34,7 @@ namespace OSXBuild.Editor
 		public OriginalBuildOption originalBuildOption = OriginalBuildOption.KeepOriginal;
 		[Tooltip("The time (in seconds) until the wsl process times out.")]
 		public int wslProcessTimeout = 60;
-		[Tooltip("The checked, prints additional debugging information about the build process.")]
+		[Tooltip("If checked, prints additional debugging information about the build process.")]
 		public bool verboseLogging = false;
 
 		public static OSXBuildSettings Instance
