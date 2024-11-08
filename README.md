@@ -67,7 +67,7 @@ You can also download this repository and extract the `Editor` directory file an
 
 Any build for OSX (otherwise known as MacOS) built on Windows devices, do in general *not* work. Instead, you get presented with an error, saying `The application "game-name" can't be opened`, with no more information.
 
-The reason why OSX builds built on Windows do not work on OSX, is the fact that Windows does not keep track of unix-specific file attributes (read/write/execute attributes), which are needed for OSX to run an executable. This executable generally can only be added on Unix devices, which both Linux and OSX devices are. The only current solutions for creating an OSX build, are building on either Linux or OSX itself.
+The reason why OSX builds built on Windows do not work on OSX, is the fact that Windows does not keep track of unix-specific file attributes (read/write/execute attributes), which are needed for OSX to run an executable. This executable attribute generally can only be added on Unix devices, which both Linux and OSX devices are. The only current solutions for creating an OSX build, are building on either Linux or OSX itself.
 
 ## The Solution
 
