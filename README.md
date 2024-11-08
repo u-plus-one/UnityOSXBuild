@@ -1,12 +1,45 @@
 # UnityOSXBuild
 
-Short description of the package.
+A Unity package for zipping builds automatically, and on Windows, fix OSX builds by adding the executable bits in the process.
 
 ## Usage
 
-Install the package according to the installation instructions
+Install the package according to the [installation instructions](#installation). Once installed, every OSX build you create, the post processing script will run, zip your build, and if necessary, fixes said build to be able to run on OSX devices.
 
-...
+### Project settings
+
+This package comes with project specific settings, found at `Edit > Project Settings... > OSX Zip Options`.
+
+|Setting|Description
+|---|---
+|[Zip Creation Method](#zip-creation-method)|Which method to use for creating the build zip file. (Windows Editor only).
+|[Zip Compression Level](#zip-compression-level)|The compression level to apply when generating the zip file.
+|Original Build Option|Determines what happens to the original build directory that was used to create the zip file.
+|WSL Process Timeout|The time (in seconds) until the wsl process times out.
+|Verbose Logging|If checked, prints additional debugging information about the build process.
+
+#### Zip Creation Method
+
+##### WSL
+
+> [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) (WSL) lets developers run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dual-boot setup.
+
+To use this option, WSL has to be installed (preferably an Ubuntu distribution, it's currently the only one we've tested), including the `zip` package on the standard Distribution of WSL on your device.
+
+- For more information on how to install WSL: https://learn.microsoft.com/en-us/windows/wsl/install/
+- For more information on how to install the `zip` package on Linux (in this case, WSL): https://www.tecmint.com/install-zip-and-unzip-in-linux/#zipubuntu
+
+##### Zip Manipulation
+
+A Windows-only solution, that zips the build, then edits very specifc bytes of the newly created zip, in order to make it compatible with OSX.
+
+#### Zip Compression Level
+
+|Compression Level|[WSL](#wsl)|[Zip Manipulation](#zip-manipulation)
+|---|---|---
+|None|No compression (`0` in the zip command)|No compression
+|Fastest|Fast compression (`1` out of 9 in the zip command)|Fast compression
+|Optimal|Best compression (`9` out of 9 in the zip command)|Best compression
 
 ## Installation
 
@@ -31,33 +64,38 @@ You can also download this repository and extract the `Editor` directory file an
 
 ## The Problem
 
-What the problem is
+Any build for OSX (otherwise known as MacOS) built on Windows devices, do in general *not* work. Instead, you get presented with an error, saying `The application "game-name" can't be opened`, with no more information.
+
+The reason why OSX builds built on Windows do not work on OSX, is the fact that Windows does not get the concept of file attributes, or at least does not know executable flags, which are needed for OSX to know a file is executable. This executable generally can only be added on Unix devices, which both Linux and OSX devices are. The only current solutions for creating an OSX build, are building on either Linux or OSX itself.
 
 ## The Solution
 
-How this package solves the problem (zip)
+This package adds or preservers the executable bits, which get lost because of Windows.
 
+If you use the [WSL Zip Creation Method](#wsl), it utilises the Windows Subsystem for Linux to zip the build, so OSX knows how to read, unpack, and fix all files, hence adding the executable bit. It's possible to manually add the executable bit to a file on Linux too, with the `chmod` command.
+
+The [Zip Manipulation](#zip-manipulation) method, instead, is a Windows-only solution. Instead of relying on a Unix system, it zips the build first, then edits the zip itself and its entries (the files inside), to accomodate the necessary file attributes getting lost. To make sure everything works as expected on OSX when unzipping this zip, it changes the zip OS to Linux too, to fake it being made on Linux.
 
 ### TODO
 
 The following files will need to be edited:
 
-- package.json
-  - Package Name
-  - Description
-  - Package version
-  - Minimum Unity version
-  - Author information
-  - Package samples
+- [ ] package.json
+  - [x] Package Name
+  - [x] Description
+  - [x] Package version
+  - [x] Minimum Unity version
+  - [ ] Author information
+  - [ ] Package samples
   - More information about package manifest files: https://docs.unity3d.com/Manual/upm-manifestPkg.html
-- Runtime .asmdef
-  - File name must be [company-name].[package-name].asmdef
-  - Assembly name must be [company-name].[package-name]
-- Editor .asmdef
-  - File name must be "[company-name].[package-name].Editor.asmdef"
-  - Assembly name must be "[company-name].[package-name].Editor"
-  - Optional: Reference runtime assembly
-- LICENSE.md
-- This README.md
+- [ ] Runtime .asmdef
+  - [ ] File name must be [company-name].[package-name].asmdef
+  - [ ] Assembly name must be [company-name].[package-name]
+- [ ] Editor .asmdef
+  - [ ] File name must be "[company-name].[package-name].Editor.asmdef"
+  - [ ] Assembly name must be "[company-name].[package-name].Editor"
+  - [ ] Optional: Reference runtime assembly
+- [ ] LICENSE.md
+- [x] This README.md
 
 See https://docs.unity3d.com/Manual/cus-layout.html for more info.
