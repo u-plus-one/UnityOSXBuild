@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
+using ZipCompressionLevel = System.IO.Compression.CompressionLevel;
 
 namespace OSXBuild.Editor
 {
@@ -25,7 +26,11 @@ namespace OSXBuild.Editor
 			var executableFilePath = $"{buildName}/Contents/MacOS/{PlayerSettings.productName}";
 
 			//Compress executable into a zip file
-			ZipFile.CreateFromDirectory(rootPath, targetZip, System.IO.Compression.CompressionLevel.NoCompression, true);
+			ZipCompressionLevel compressionLevel;
+			if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Optimal) compressionLevel = ZipCompressionLevel.Optimal;
+			else if(OSXBuildSettings.Instance.zipCompressionLevel == CompressionLevel.Fastest) compressionLevel = ZipCompressionLevel.Fastest;
+			else compressionLevel = ZipCompressionLevel.NoCompression;
+			ZipFile.CreateFromDirectory(rootPath, targetZip, compressionLevel, true);
 
 			int entryCount;
 			//Modify zip to set the executable attributes
