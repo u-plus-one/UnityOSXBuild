@@ -94,7 +94,7 @@ namespace OSXBuild.Editor
 			ZipFile.CreateFromDirectory(folder, zip, compressionLevel, true);
 		}
 
-		private static void VerboseLog(string message)
+		public static void VerboseLog(string message)
 		{
 			if(OSXBuildSettings.Instance.verboseLogging)
 			{

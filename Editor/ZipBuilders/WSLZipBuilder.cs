@@ -59,31 +59,6 @@ namespace OSXBuild.Editor
 			#endregion
 
 			#region Zipping process
-
-			if (File.Exists($"{buildDirectory}.zip"))
-			{
-				previousBuildRenamed = true;
-
-				UnityEngine.Debug.LogWarning($"Previous build found, renaming it to '{buildName}.old.zip");
-
-				if (File.Exists($"{buildDirectory}.old.zip"))
-				{
-					oldBuildRecycled = true;
-
-					UnityEngine.Debug.LogWarning($"Old zipped build found, moving to recycle bin");
-
-					string randomStr = RandomString(20);
-					Directory.CreateDirectory($"Assets/{randomStr}");
-					File.Move($"{buildDirectory}.old.zip", $"Assets/{randomStr}/{buildName}.old.zip");
-					AssetDatabase.MoveAssetToTrash($"Assets/{randomStr}/{buildName}.old.zip");
-					AssetDatabase.DeleteAsset($"Assets/{randomStr}");
-				}
-
-				File.Move($"{buildDirectory}.zip", $"{buildDirectory}.old.zip");
-			}
-
-            UnityEngine.Debug.Log("Creating zip...");
-
             var process = new Process()
 			{
 				StartInfo = new ProcessStartInfo()
@@ -99,11 +74,14 @@ namespace OSXBuild.Editor
 			};
             process.OutputDataReceived += Process_OutputDataReceived;
             process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.Exited += (sender, e) => Process_Exited(sender, e, buildName, previousBuildRenamed, oldBuildRecycled);
 			process.Start();
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();
-			process.WaitForExit(60000);
+			process.WaitForExit(OSXBuildSettings.Instance.wslProcessTimeout * 1000);
+			if (!process.HasExited)
+			{
+				process.Kill();
+			}
 			#endregion
 		}
 
@@ -117,12 +95,6 @@ namespace OSXBuild.Editor
         {
             if (e.Data != null)
                 UnityEngine.Debug.LogError(e.Data);
-        }
-        private void Process_Exited(object sender, EventArgs e, string buildName, bool previousBuildRenamed, bool oldBuildRecycled)
-        {
-			UnityEngine.Debug.Log("Zip created!");
-			if (previousBuildRenamed) UnityEngine.Debug.LogWarning($"Previous build renamed to '{buildName}.old.zip'");
-			if (oldBuildRecycled) UnityEngine.Debug.LogWarning($"Old zipped build moved to recycle bin");
         }
 
         private bool CheckCommandAvailableErrorContains(string commandFileName, string commandArguments, string outputContainsError)
@@ -167,13 +139,6 @@ namespace OSXBuild.Editor
             proc.Start();
             string output = proc.StandardOutput.ReadToEnd();
             return output.Replace("\0", string.Empty);
-        }
-
-        private static string RandomString(int length)
-        {
-            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[UnityEngine.Random.Range(0, s.Length)]).ToArray());
         }
     }
 }
