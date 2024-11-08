@@ -2,10 +2,33 @@
 
 Short description of the package.
 
+## Usage
+
+Install the package according to the installation instructions
+
+...
+
 ## Installation
 
-How to install
- 
+### Option 1: Package Manager
+
+Open the Package Manager window, click on "Add Package from Git URL ...", then enter the following:
+```
+https://github.com/d3tonat0r/unityosxbuild.git
+```
+
+### Option 2: Manually Editing packages.json
+
+Add the following line to your project's `Packages/manifest.json`:
+
+```json
+"com.github.d3tonat0r.unityosxbuild": "https://github.com/d3tonat0r/unityosxbuild.git"
+```
+
+### Option 3: Manual Installation (not recommended)
+
+You can also download this repository and extract the `Editor` directory file anywhere inside your project's Assets folder. (The folder _must_ be named 'Editor' for it to work)
+
 ## The Problem
 
 What the problem is
