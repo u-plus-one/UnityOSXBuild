@@ -1,4 +1,3 @@
-#if UNITY_EDITOR_WIN
 using System.IO;
 using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
@@ -103,4 +102,3 @@ namespace OSXBuild.Editor
 		}
 	}
 }
-#endif
