@@ -11,7 +11,7 @@ namespace OSXBuild.Editor
 {
 	public class WSLZipBuilder : ZipBuilder
 	{
-		public WSLZipBuilder(BuildReport report) : base(report) 
+		public WSLZipBuilder(BuildReport report) : base(report)
 		{
 
 		}
@@ -24,7 +24,7 @@ namespace OSXBuild.Editor
 
 			string buildFolder = Directory.GetParent(buildDirectory).FullName;
 			char driveLetter = buildFolder[0];
-			
+
 			string buildFolderWsl = buildFolder;
 			if (buildFolderWsl[1].Equals(':'))
 			{
@@ -89,8 +89,8 @@ namespace OSXBuild.Editor
 				},
 				EnableRaisingEvents = true,
 			};
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.ErrorDataReceived += Process_ErrorDataReceived;
+			process.OutputDataReceived += Process_OutputDataReceived;
+			process.ErrorDataReceived += Process_ErrorDataReceived;
 			process.Start();
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();
@@ -101,61 +101,5 @@ namespace OSXBuild.Editor
 			}
 			#endregion
 		}
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e.Data != null)
-                VerboseLog(e.Data);
-        }
-
-        private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (e.Data != null)
-                UnityEngine.Debug.LogError(e.Data);
-        }
-
-        private bool CheckCommandAvailableErrorContains(string commandFileName, string commandArguments, string outputContainsError)
-		{
-			string output = GetCommandOutput(commandFileName, commandArguments);
-
-			VerboseLog($"Checking output\n{output}");
-
-			if (output.Contains(outputContainsError))
-			{
-				return false;
-			}
-			return true;
-		}
-
-		private bool CheckCommandAvailableErrorEquals(string commandFileName, string commandArguments, string outputEqualsError)
-		{
-            string output = GetCommandOutput(commandFileName, commandArguments);
-
-            VerboseLog($"Checking output\n{output}");
-
-            if (output.Equals(outputEqualsError))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private string GetCommandOutput(string commandFileName, string commandArguments)
-		{
-            var proc = new Process()
-            {
-                StartInfo = new ProcessStartInfo()
-                {
-                    FileName = commandFileName,
-                    Arguments = commandArguments,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            };
-            proc.Start();
-            string output = proc.StandardOutput.ReadToEnd();
-            return output.Replace("\0", string.Empty);
-        }
-    }
+	}
 }

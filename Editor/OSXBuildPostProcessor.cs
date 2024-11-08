@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO.Compression;
 using ZipCompressionLevel = System.IO.Compression.CompressionLevel;
+using System.Diagnostics;
 
 namespace OSXBuild.Editor
 {
@@ -44,17 +45,49 @@ namespace OSXBuild.Editor
 				builder.CreateZip(sourceDir, zipFileName);
 #else
 				//In case of MacOS / Linux, just create a normal zip without modifying it
-				//TODO: needs verification
-				CreateZip(sourceDir, zipFileName);
+				//TODO: Test MacOS/Linux zipping code
+				//CreateZip(sourceDir, zipFileName);
+
+				VerboseLog("Checking if the 'zip' package is installed");
+				
+				if (!CheckCommandAvailableErrorEquals("wsl", "-e which zip", string.Empty))
+				{
+					throw new Exception("Zip package not installed. Please make sure you install zip before using this code");
+				}
+				VerboseLog("Zip package installed");
+
+							var process = new Process()
+			{
+				StartInfo = new ProcessStartInfo()
+				{
+					FileName = "bash",
+					Arguments = $"-c \"cd {buildFolderWsl} && zip -{compressionLevel} -r {buildName}.zip {buildName}\"",
+					RedirectStandardOutput = true,
+					RedirectStandardError = true,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+				},
+				EnableRaisingEvents = true,
+			};
+			process.OutputDataReceived += Process_OutputDataReceived;
+			process.ErrorDataReceived += Process_ErrorDataReceived;
+			process.Start();
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
+			process.WaitForExit(OSXBuildSettings.Instance.wslProcessTimeout * 1000);
+			if (!process.HasExited)
+			{
+				process.Kill();
+			}
 #endif
 
-				if(File.Exists(zipFileName))
+                if (File.Exists(zipFileName))
 				{
 					VerboseLog($"OSX Build zip created successfully at {zipFileName}");
 				}
 				else
 				{
-					Debug.LogError("OSX build zip creation failed.");
+					UnityEngine.Debug.LogError("OSX build zip creation failed.");
 				}
 
 				//Perform actions on the build directory based on project setting
@@ -97,8 +130,64 @@ namespace OSXBuild.Editor
 		{
 			if(OSXBuildSettings.Instance.verboseLogging)
 			{
-				Debug.Log(message);
+				UnityEngine.Debug.Log(message);
 			}
 		}
-	}
+
+        public static bool CheckCommandAvailableErrorContains(string commandFileName, string commandArguments, string outputContainsError)
+        {
+            string output = GetCommandOutput(commandFileName, commandArguments);
+
+            VerboseLog($"Checking output\n{output}");
+
+            if (output.Contains(outputContainsError))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CheckCommandAvailableErrorEquals(string commandFileName, string commandArguments, string outputEqualsError)
+        {
+            string output = GetCommandOutput(commandFileName, commandArguments);
+
+            VerboseLog($"Checking output\n{output}");
+
+            if (output.Equals(outputEqualsError))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static string GetCommandOutput(string commandFileName, string commandArguments)
+        {
+            var proc = new Process()
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = commandFileName,
+                    Arguments = commandArguments,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+            proc.Start();
+            string output = proc.StandardOutput.ReadToEnd();
+            return output.Replace("\0", string.Empty);
+        }
+
+        public static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data != null)
+                VerboseLog(e.Data);
+        }
+
+        public static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data != null)
+                UnityEngine.Debug.LogError(e.Data);
+        }
+    }
 }
