@@ -28,6 +28,7 @@ namespace OSXBuild.Editor
 			EditorGUILayout.PropertyField(so.FindProperty(nameof(OSXBuildSettings.zipCreationMethod)));
 			EditorGUILayout.PropertyField(so.FindProperty(nameof(OSXBuildSettings.zipCompressionLevel)));
 			EditorGUILayout.PropertyField(so.FindProperty(nameof(OSXBuildSettings.originalBuildOption)));
+			EditorGUILayout.PropertyField(so.FindProperty(nameof(OSXBuildSettings.wslProcessTimeout)), new GUIContent("WSL Process Timeout"));
 			GUILayout.Space(20);
 			EditorGUILayout.PropertyField(so.FindProperty(nameof(OSXBuildSettings.verboseLogging)));
 			if(so.ApplyModifiedProperties())
