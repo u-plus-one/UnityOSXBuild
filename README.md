@@ -24,10 +24,11 @@ This package comes with project specific settings, found at `Edit > Project Sett
 
 > [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) (WSL) lets developers run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dual-boot setup.
 
-To use this option, WSL has to be installed (preferably an Ubuntu distribution, it's currently the only one we've tested), including the `zip` package on the standard Distribution of WSL on your device.
-
-- For more information on how to install WSL: https://learn.microsoft.com/en-us/windows/wsl/install/
-- For more information on how to install the `zip` package on Linux (in this case, WSL): https://www.tecmint.com/install-zip-and-unzip-in-linux/#zipubuntu
+> [!WARNING]
+> To use this option, WSL has to be installed (preferably an Ubuntu distribution, it's currently the only one we've tested), including the `zip` package on the standard Distribution of WSL on your device.
+> 
+> - For more information on how to install WSL: https://learn.microsoft.com/en-us/windows/wsl/install/
+> - For more information on how to install the `zip` package on Linux (in this case, WSL): https://www.tecmint.com/install-zip-and-unzip-in-linux/#zipubuntu
 
 ##### Zip Manipulation
 
