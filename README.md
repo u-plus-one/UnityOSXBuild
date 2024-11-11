@@ -32,7 +32,7 @@ This package comes with project specific settings, found at `Edit > Project Sett
 
 ##### Zip Manipulation
 
-A Windows-only solution, that zips the build, then edits very specifc bytes of the newly created zip, in order to make it compatible with OSX.
+A Windows-only solution, that zips the build, then edits very specific bytes of the newly created zip, in order to make it compatible with OSX.
 
 #### Zip Compression Level
 
