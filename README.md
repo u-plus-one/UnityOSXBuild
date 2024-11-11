@@ -71,32 +71,19 @@ The reason why OSX builds built on Windows do not work on OSX, is the fact that 
 
 ## The Solution
 
-This package automatically creates a zip from the mac build and restores the executable bits, which get lost because Windows does not support them.
+This package automatically creates a zip from the mac build and restores the executable bits, which get lost since Windows does not support them.
 
 If you use the [WSL Zip Creation Method](#wsl), it utilises the Windows Subsystem for Linux to zip the build, so OSX knows how to read, unpack, and fix all files, hence adding the executable bit. It's possible to manually add the executable bit to a file on Linux too, with the `chmod` command. If WSL is already installed on the system, this is the recommended method.
 
 The [Zip Manipulation](#zip-manipulation) method, instead, is a Windows-only solution. Instead of relying on a Unix system, it zips the build first, then edits the zip itself and its entries (the files inside), to restore the missing file attributes. To make sure everything works as expected on OSX when unzipping this zip, it changes the zip's Host OS to Unix too, to ensure the required file attributes are applied.
 
-### TODO
+> [!WARNING]
+> The zip file should never be unzipped in a Windows environment, since it causes the file attributes to get lost, even when zipped again. Editing the zip's contents with an application (e.g. WinRAR) _should_ be fine.
 
-The following files will need to be edited:
+The zip creation process runs at the very end of the build process, meaning that all changes made during a `IPostProcessBuild` script are included in the build.
 
-- [ ] package.json
-  - [x] Package Name
-  - [x] Description
-  - [x] Package version
-  - [x] Minimum Unity version
-  - [ ] Author information
-  - [x] ~~Package samples~~
-  - More information about package manifest files: https://docs.unity3d.com/Manual/upm-manifestPkg.html
-- [x] ~~Runtime .asmdef~~
-  - [x] ~~File name must be [company-name].[package-name].asmdef~~
-  - [x] ~~Assembly name must be [company-name].[package-name]~~
-- [x] Editor .asmdef
-  - [x] File name must be "[company-name].[package-name].Editor.asmdef"
-  - [x] Assembly name must be "[company-name].[package-name].Editor"
-  - [x] ~~Optional: Reference runtime assembly~~
-- [ ] LICENSE.md
-- [x] This README.md
+## Attribution
 
-See https://docs.unity3d.com/Manual/cus-layout.html for more info.
+[@lajawi](https://github.com/lajawi) - Unix attributes research, WSL zipper
+
+[@d3tonat0r](https://github.com/d3tonat0r) - Package structure, Manual zip builder
