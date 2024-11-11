@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
@@ -56,32 +57,52 @@ namespace OSXBuild.Editor
 				}
 				VerboseLog("Zip package installed");
 
-							var process = new Process()
-			{
-				StartInfo = new ProcessStartInfo()
+                string buildName = Path.GetFileName(sourceDir);
+                string buildFolder = Directory.GetParent(sourceDir).FullName;
+
+                float compressionLevel = 6;
+
+                switch (OSXBuildSettings.Instance.zipCompressionLevel)
+                {
+                    case CompressionLevel.None:
+                        compressionLevel = 0;
+                        break;
+
+                    case CompressionLevel.Fastest:
+                        compressionLevel = 1;
+                        break;
+
+                    case CompressionLevel.Optimal:
+                        compressionLevel = 9;
+                        break;
+                }
+
+                var process = new Process()
 				{
-					FileName = "bash",
-					Arguments = $"-c \"cd {buildFolderWsl} && zip -{compressionLevel} -r {buildName}.zip {buildName}\"",
-					RedirectStandardOutput = true,
-					RedirectStandardError = true,
-					UseShellExecute = false,
-					CreateNoWindow = true,
-				},
-				EnableRaisingEvents = true,
-			};
-			process.OutputDataReceived += Process_OutputDataReceived;
-			process.ErrorDataReceived += Process_ErrorDataReceived;
-			process.Start();
-			process.BeginOutputReadLine();
-			process.BeginErrorReadLine();
-			process.WaitForExit(OSXBuildSettings.Instance.wslProcessTimeout * 1000);
-			if (!process.HasExited)
-			{
-				process.Kill();
-			}
+					StartInfo = new ProcessStartInfo()
+					{
+						FileName = "bash",
+						Arguments = $"-c \"cd {buildFolder} && zip -{compressionLevel} -r {buildName}.zip {buildName}\"",
+						RedirectStandardOutput = true,
+						RedirectStandardError = true,
+						UseShellExecute = false,
+						CreateNoWindow = true,
+					},
+					EnableRaisingEvents = true,
+				};
+				process.OutputDataReceived += Process_OutputDataReceived;
+				process.ErrorDataReceived += Process_ErrorDataReceived;
+				process.Start();
+				process.BeginOutputReadLine();
+				process.BeginErrorReadLine();
+				process.WaitForExit(OSXBuildSettings.Instance.wslProcessTimeout * 1000);
+				if (!process.HasExited)
+				{
+					process.Kill();
+				}
 #endif
 
-                if (File.Exists(zipFileName))
+				if (File.Exists(zipFileName))
 				{
 					VerboseLog($"OSX Build zip created successfully at {zipFileName}");
 				}
