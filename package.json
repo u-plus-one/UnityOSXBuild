@@ -1,6 +1,6 @@
 {
   "name": "com.github.d3tonat0r.unityosxbuild",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "OSX Build",
   "description": "A Unity package for zipping builds automatically, and on Windows, fix OSX builds by adding the executable bits in the process.",
   "unity": "2022.3",
@@ -8,8 +8,11 @@
     "zip",
     "osx",
     "macos",
-    "executable bit"
+    "build",
+    "executable",
+    "attribute"
   ],
+  "license": "See LICENSE.md",
   "hideInEditor": true,
   "documentationUrl": "https://github.com/D3TONAT0R/UnityOSXBuild/blob/main/README.md"
 }
