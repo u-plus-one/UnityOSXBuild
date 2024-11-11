@@ -30,6 +30,9 @@ This package comes with project specific settings, found at `Edit > Project Sett
 > - For more information on how to install WSL: https://learn.microsoft.com/en-us/windows/wsl/install/
 > - For more information on how to install the `zip` package on Linux (in this case, WSL): https://www.tecmint.com/install-zip-and-unzip-in-linux/#zipubuntu
 
+> [!WARNING]
+> To build on external or secondary drives, you have to make sure to *mount* those drives in WSL too: https://learn.microsoft.com/en-us/windows/wsl/wsl2-mount-disk/
+
 ##### Zip Manipulation
 
 A Windows-only solution, that zips the build, then edits very specific bytes of the newly created zip, in order to make it compatible with OSX.
