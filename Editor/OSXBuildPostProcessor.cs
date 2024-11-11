@@ -51,7 +51,7 @@ namespace OSXBuild.Editor
 
 				VerboseLog("Checking if the 'zip' package is installed");
 				
-				if (!CheckCommandAvailableErrorEquals("wsl", "-e which zip", string.Empty))
+				if (!CheckCommandAvailableErrorEquals("which", "zip", string.Empty))
 				{
 					throw new Exception("Zip package not installed. Please make sure you install zip before using this code");
 				}
