@@ -51,7 +51,7 @@ A Windows-only solution, that zips the build, then edits very specific bytes of 
 
 Open the Package Manager window, click on "Add Package from Git URL ...", then enter the following:
 ```
-https://github.com/d3tonat0r/unityosxbuild.git
+https://github.com/u-plus-one/unityosxbuild.git
 ```
 
 ### Option 2: Manually Editing packages.json
@@ -59,7 +59,7 @@ https://github.com/d3tonat0r/unityosxbuild.git
 Add the following line to your project's `Packages/manifest.json`:
 
 ```json
-"com.github.d3tonat0r.unityosxbuild": "https://github.com/d3tonat0r/unityosxbuild.git"
+"com.github.d3tonat0r.unityosxbuild": "https://github.com/u-plus-one/unityosxbuild.git"
 ```
 
 ### Option 3: Manual Installation (not recommended)
