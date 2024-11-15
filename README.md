@@ -59,7 +59,7 @@ https://github.com/u-plus-one/unityosxbuild.git
 Add the following line to your project's `Packages/manifest.json`:
 
 ```json
-"com.github.d3tonat0r.unityosxbuild": "https://github.com/u-plus-one/unityosxbuild.git"
+"com.github.u-plus-one.unityosxbuild": "https://github.com/u-plus-one/unityosxbuild.git"
 ```
 
 ### Option 3: Manual Installation (not recommended)
