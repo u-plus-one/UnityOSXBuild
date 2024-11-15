@@ -1,5 +1,5 @@
 {
-  "name": "com.github.d3tonat0r.unityosxbuild",
+  "name": "com.github.u-plus-one.unityosxbuild",
   "version": "1.0.0",
   "displayName": "OSX Build",
   "description": "A Unity package for zipping builds automatically, and on Windows, fix OSX builds by adding the executable bits in the process.",
