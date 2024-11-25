@@ -35,6 +35,8 @@ namespace OSXBuild.Editor
 			buildFolderWsl = buildFolderWsl.Replace(" ", @"\ ");
 
 			string buildName = Path.GetFileName(buildDirectory);
+			buildName = buildName.Replace(" ", @"\ ");
+
 			string productName = Application.productName;
 			#endregion
 
