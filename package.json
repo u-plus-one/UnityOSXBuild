@@ -4,6 +4,10 @@
   "displayName": "OSX Build",
   "description": "A Unity package for zipping builds automatically, and on Windows, fix OSX builds by adding the executable bits in the process.",
   "unity": "2022.3",
+  "author": {
+    "name": "u+1",
+    "url": "https://github.com/u-plus-one"
+  },
   "keywords": [
     "zip",
     "osx",
